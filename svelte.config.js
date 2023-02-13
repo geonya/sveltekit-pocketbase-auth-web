@@ -15,11 +15,6 @@ const config = {
 
   kit: {
     adapter: adapter(),
-    vite: {
-      ssr: {
-        noExternal: ["svelte-hero-icons"],
-      },
-    },
   },
 };
 

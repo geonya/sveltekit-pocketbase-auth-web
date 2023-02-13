@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { getImageURL } from "$lib/utils";
   import "../app.postcss";
   import type { LayoutServerData } from "./$types";
   export let data: LayoutServerData;
@@ -25,7 +26,13 @@
           <label tabindex="0" class="btn-ghost btn-circle avatar btn">
             <div class="w-10 rounded-full">
               <img
-                src="https://placeimg.com/80/80/people"
+                src={data?.user?.avatar
+                  ? getImageURL(
+                      data?.user?.collectionId,
+                      data?.user?.id,
+                      data?.user?.avatar
+                    )
+                  : `https://ui-avatars.com/api/?name=${data?.user?.name}`}
                 alt="User Avatar"
                 class=""
               />
