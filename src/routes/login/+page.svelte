@@ -6,14 +6,14 @@
 
 <div class="flex h-full w-full flex-col items-center">
   <h2
-    class="mt-2 text-center text-3xl font-bold tracking-tight text-base-content"
+    class="text-base-content mt-2 text-center text-3xl font-bold tracking-tight"
   >
     Login Account
   </h2>
   <p class="mt-1 text-center">
     Or <a
       href="/register"
-      class="font-medium text-primary hover:cursor-pointer hover:underline"
+      class="text-primary font-medium hover:cursor-pointer hover:underline"
       >Register</a
     > If you don't have account.
   </p>
@@ -45,7 +45,7 @@
     <div class="w-full max-w-md">
       <a
         href="/reset-password"
-        class="font-medium text-primary hover:cursor-pointer hover:underline"
+        class="text-primary font-medium hover:cursor-pointer hover:underline"
       >
         Forgot password?
       </a>
