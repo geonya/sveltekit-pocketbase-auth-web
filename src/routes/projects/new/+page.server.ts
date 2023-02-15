@@ -21,6 +21,6 @@ export const actions: Actions = {
       console.error(err);
       throw error(err.status, err.message);
     }
-    throw redirect(303, "/");
+    throw redirect(303, "/my/projects");
   },
 };

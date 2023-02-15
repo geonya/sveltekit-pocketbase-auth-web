@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { enhance } from "$app/forms";
   import Input from "$lib/components/Input.svelte";
 </script>
 
@@ -9,6 +10,7 @@
       action="?/create"
       class="flex w-full flex-col items-center space-y-2"
       enctype="multipart/form-data"
+      use:enhance
     >
       <h3 class="text-3xl font-bold ">Tell us about your project.</h3>
       <p class="mt-2 text-lg">

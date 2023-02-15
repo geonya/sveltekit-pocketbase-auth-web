@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-export const serializeNonPOJOs = (obj: Object | null) => {
+export const serializeNonPOJOs = (obj: Object | null): any => {
   return structuredClone(obj);
 };
 

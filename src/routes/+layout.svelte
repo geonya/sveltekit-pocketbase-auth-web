@@ -61,9 +61,7 @@
       {/if}
     </div>
   </nav>
-  <div class="py-4">
-    <div class="max-x-7xl mx-auto sm:px-6 lg:px-8">
-      <slot><!-- optional fallback --></slot>
-    </div>
+  <div class="mx-auto w-full max-w-4xl py-10 sm:px-6 lg:px-8">
+    <slot><!-- optional fallback --></slot>
   </div>
 </main>
