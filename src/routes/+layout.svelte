@@ -22,6 +22,8 @@
             >Add Project</a
           >
         </div>
+        <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+        <!-- svelte-ignore a11y-label-has-associated-control -->
         <div class="dropdown-end dropdown">
           <label tabindex="0" class="btn-ghost btn-circle avatar btn">
             <div class="w-10 rounded-full">

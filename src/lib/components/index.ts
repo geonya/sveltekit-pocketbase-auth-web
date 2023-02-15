@@ -1,3 +1,4 @@
-import Input from "./input.svelte";
+import Input from "./Input.svelte";
+import Modal from "./Modal.svelte";
 
-export { Input };
+export { Input, Modal };
