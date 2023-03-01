@@ -1,11 +1,19 @@
+import { updatePasswordSchema } from "$lib/schema";
+import { validataData } from "$lib/utils";
 import { error, redirect } from "@sveltejs/kit";
 import type { Actions } from "./$types";
 
 export const actions: Actions = {
   "update-password": async ({ request, locals }) => {
-    const data = Object.fromEntries(await request.formData());
+    const body = await request.formData();
+    const { formData, errors } = await validataData(body, updatePasswordSchema);
+    if (errors) {
+      return {
+        errors: errors.fieldErrors,
+      }
+    }
     try {
-      await locals.pb.collection("users").update(locals.user.id, data);
+      await locals.pb.collection("users").update(locals.user.id, formData);
       locals.pb.authStore.clear();
     } catch (err: any) {
       console.error(err);

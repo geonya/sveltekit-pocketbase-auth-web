@@ -10,6 +10,7 @@ const config = {
     vitePreprocess(),
     preprocess({
       postcss: true,
+      typescript: true
     }),
   ],
 

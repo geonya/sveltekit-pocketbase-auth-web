@@ -1,3 +1,16 @@
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar: string;
+  emailVisibility: boolean
+  verified: boolean;
+  created: string;
+  updated: string;
+  collectionId: string;
+  collectionName: string;
+}
+
 interface Project extends Object {
   collectionId: string;
   collectionName: string;

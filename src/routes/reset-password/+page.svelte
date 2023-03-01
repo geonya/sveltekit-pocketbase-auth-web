@@ -1,7 +1,26 @@
 <script lang="ts">
-  import type { ActionData } from "./$types";
+  import type { ActionData } from './$types';
+  import { Input } from '$lib/components';
+  import { applyAction, enhance, type SubmitFunction } from '$app/forms';
 
   export let form: ActionData;
+
+  let loading = false;
+
+  const submitResetPassworld: SubmitFunction = () => {
+    loading = true;
+    return async ({ result }) => {
+      switch (result.type) {
+        case 'success':
+          break;
+        case 'error':
+          break;
+        default:
+          await applyAction(result);
+      }
+      loading = false;
+    };
+  };
 </script>
 
 <div class="flex h-full w-full flex-col items-center">
@@ -17,17 +36,17 @@
     action="?/reset-password"
     method="post"
     class="flex w-full flex-col items-center space-y-2 pt-4"
+    use:enhance={submitResetPassworld}
   >
-    <div class="form-control w-full max-w-md">
-      <label for="email" class="label pb-1 font-medium">
-        <span class="label-text">Email</span>
-      </label>
-      <input
-        type="email"
-        name="email"
-        class="input-bordered input w-full max-w-md"
-      />
-    </div>
+    <Input
+      id="email"
+      type="email"
+      label="Email"
+      placeholder="Enter your email"
+      required
+      errors={form?.errors?.email}
+      disabled={loading}
+    />
 
     <div class="w-full max-w-md pt-2">
       <button type="submit" class="btn-primary btn mb-6 w-full">

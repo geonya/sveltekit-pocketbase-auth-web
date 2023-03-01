@@ -1,3 +1,9 @@
+<script lang="ts">
+  import { Input } from '$lib/components';
+  import type { ActionData } from './$types';
+  export let form: ActionData;
+</script>
+
 <div class="flex h-full w-full flex-col items-center">
   <h2
     class="mt-2 text-center text-3xl font-bold tracking-tight text-base-content"
@@ -16,47 +22,33 @@
     method="post"
     class="pt-r flex w-full flex-col items-center space-y-2"
   >
-    <div class="form-control w-full max-w-md">
-      <label for="name" class="label pb-1 font-medium">
-        <span class="label-text">Name</span>
-      </label>
-      <input
-        type="text"
-        name="name"
-        class="input-bordered input w-full max-w-md"
-      />
-    </div>
-    <div class="form-control w-full max-w-md">
-      <label for="email" class="label pb-1 font-medium">
-        <span class="label-text">Email</span>
-      </label>
-      <input
-        type="email"
-        name="email"
-        class="input-bordered input w-full max-w-md"
-      />
-    </div>
-    <div class="form-control w-full max-w-md">
-      <label for="password" class="label pb-1 font-medium">
-        <span class="label-text">Password</span>
-      </label>
-      <input
-        type="password"
-        name="password"
-        class="input-bordered input w-full max-w-md"
-      />
-    </div>
-    <div class="form-control w-full max-w-md">
-      <label for="passwordConfirm" class="label pb-1 font-medium">
-        <span class="label-text">Confirm Password</span>
-      </label>
-      <input
-        type="password"
-        name="passwordConfirm"
-        class="input-bordered input w-full max-w-md"
-      />
-    </div>
-    <div class="w-full max-w-md pt-2">
+    <Input
+      type="text"
+      id="name"
+      label="Name"
+      value={form?.data?.name}
+      errors={form?.errors?.name}
+    />
+    <Input
+      type="email"
+      id="email"
+      label="Email"
+      value={form?.data?.email}
+      errors={form?.errors?.email}
+    />
+    <Input
+      type="password"
+      id="password"
+      label="Password"
+      errors={form?.errors?.password}
+    />
+    <Input
+      type="password"
+      id="passwordConfirm"
+      label="Password Confirm"
+      errors={form?.errors?.passwordConfirm}
+    />
+    <div class="w-full max-w-lg pt-2">
       <button type="submit" class="btn-primary btn w-full"> Register </button>
     </div>
   </form>

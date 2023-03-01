@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { applyAction, enhance } from "$app/forms";
-  import { invalidateAll } from "$app/navigation";
-  import { Input } from "$lib/components";
-  import { getImageURL } from "$lib/utils";
-  import type { ActionResult } from "@sveltejs/kit";
-  import { Icon, Pencil } from "svelte-hero-icons";
-  import type { PageData } from "./$types";
-
+  import { enhance, type SubmitFunction } from '$app/forms';
+  import { Input } from '$lib/components';
+  import { getImageURL } from '$lib/utils';
+  import { Icon, Pencil } from 'svelte-hero-icons';
+  import type { ActionData, PageData } from './$types';
   export let data: PageData;
-  $: loading = false;
+  let loading = false;
+  let form: ActionData;
+
+  $: console.log(form);
 
   const showPreview = (event: Event) => {
     const target = event.target as HTMLInputElement;
@@ -17,23 +17,26 @@
     if (files && files.length > 0) {
       const src = URL.createObjectURL(files[0]);
       const preview = document.getElementById(
-        "avatar-preview"
+        'avatar-preview',
       ) as HTMLImageElement;
       preview.src = src;
     }
   };
 
-  const submitUpdateProfile = () => {
+  const submitProfileUpdate: SubmitFunction = () => {
     loading = true;
-    return async ({ result }: { result: ActionResult }) => {
+    return ({ result, update }) => {
       switch (result.type) {
-        case "success":
-          await invalidateAll();
+        case 'success':
+          if (result) {
+            form = result.data as ActionData;
+          }
           break;
-        case "error":
+        case 'error':
+          console.log(result.error);
           break;
         default:
-          await applyAction(result);
+          update();
       }
       loading = false;
     };
@@ -46,7 +49,7 @@
     method="post"
     class="flex w-full flex-col space-y-2"
     enctype="multipart/form-data"
-    use:enhance={submitUpdateProfile}
+    use:enhance={submitProfileUpdate}
   >
     <h3 class="text-2xl font-medium">Update Profile</h3>
     <div class="form-control w-full max-w-lg">
@@ -68,7 +71,7 @@
               ? getImageURL(
                   data?.user?.collectionId,
                   data?.user?.id,
-                  data?.user?.avatar
+                  data?.user?.avatar,
                 )
               : `https://ui-avatars.com/api/?name=${data?.user?.name}`}
             alt="User Avatar"
@@ -87,8 +90,19 @@
         on:change={showPreview}
         disabled={loading}
       />
+      {#if form?.errors?.avatar}
+        <label for="avatar" class="label py-0 pt-1">
+          <span class="label-text-alt text-error">{form.errors.avatar}</span>
+        </label>
+      {/if}
     </div>
-    <Input id="name" label="Name" value={data?.user?.name} disabled={loading} />
+    <Input
+      id="username"
+      label="Username"
+      value={form?.data?.username ?? data?.user?.username ?? ''}
+      disabled={loading}
+      errors={form?.errors?.username}
+    />
     <div class="w-full max-w-lg pt-3">
       <button class="btn-primary btn w-full max-w-lg" type="submit"
         >Update Profile</button

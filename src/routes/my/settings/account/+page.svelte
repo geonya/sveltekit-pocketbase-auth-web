@@ -1,50 +1,34 @@
 <script lang="ts">
-  import { applyAction, enhance, type SubmitFunction } from "$app/forms";
-  import { invalidateAll } from "$app/navigation";
-  import Input from "$lib/components/Input.svelte";
-  import Modal from "$lib/components/Modal.svelte";
-  import type { ActionResult } from "@sveltejs/kit";
-  import type { PageData } from "./$types";
+  import { applyAction, enhance, type SubmitFunction } from '$app/forms';
+  import { invalidateAll } from '$app/navigation';
+  import Input from '$lib/components/Input.svelte';
+  import Modal from '$lib/components/Modal.svelte';
+  import type { ActionData, PageData } from './$types';
   export let data: PageData;
+  export let form: ActionData;
   let emailModalOpen: boolean;
   $: emailModalOpen && (emailModalOpen = false);
 
-  let usernameModalOpen: boolean;
-  $: usernameModalOpen && (usernameModalOpen = false);
+  let nameModalOpen: boolean;
+  $: nameModalOpen && (nameModalOpen = false);
 
   let loading: boolean;
   $: loading && (loading = false);
 
-  const submitUpdateEmail = () => {
+  const submitUpdate: SubmitFunction = () => {
     loading = true;
-    emailModalOpen = true;
-    return async ({ result }: { result: ActionResult }) => {
+    return ({ result, update }) => {
       switch (result.type) {
-        case "success":
-          await invalidateAll();
-          emailModalOpen = false;
+        case 'success':
+          if (result) {
+            form = result.data as ActionData;
+          }
           break;
-        case "error":
+        case 'error':
+          console.log(result.error);
           break;
         default:
-          await applyAction(result);
-      }
-      loading = false;
-    };
-  };
-  const submitUpdateUsername = () => {
-    loading = true;
-    usernameModalOpen = true;
-    return async ({ result }: { result: ActionResult }) => {
-      switch (result.type) {
-        case "success":
-          await invalidateAll();
-          usernameModalOpen = false;
-          break;
-        case "error":
-          break;
-        default:
-          await applyAction(result);
+          update();
       }
       loading = false;
     };
@@ -58,21 +42,17 @@
     <Modal label="Change Email" checked={emailModalOpen}>
       <span slot="trigger" class="btn-primary btn">Change Email</span>
       <h3 slot="heading">Change Your Email</h3>
-      <form
-        action="?/update-email"
-        method="post"
-        class="space-y-2"
-        use:enhance={submitUpdateEmail}
-      >
+      <form action="?/update-email" method="post" class="space-y-2" use:enhance>
         <Input
           label="Email Address"
           id="email"
           type="email"
           placeholder={data?.user?.email ||
-            "Enter Your Email which you want to change"}
+            'Enter Your Email which you want to change'}
           required
           value={data?.user?.email}
           disabled={loading}
+          errors={form?.errors?.email}
         />
         <button class="btn-primary btn w-full" type="submit" disabled={loading}
           >Change Email</button
@@ -81,29 +61,25 @@
     </Modal>
   </div>
   <div class="w-full">
-    <h3 class="text-2xl font-medium">Change Username</h3>
+    <h3 class="text-2xl font-medium">Change Name</h3>
     <div class="divider mb-0.5" />
-    <Input
-      id="username"
-      label="Username"
-      value={data?.user?.username || ""}
-      disabled
-    />
-    <Modal label="Change Username" checked={usernameModalOpen}>
+    <Input id="name" label="name" value={data?.user?.name || ''} disabled />
+    <Modal label="Change Name" checked={nameModalOpen}>
       <span slot="trigger" class="btn-primary btn">Change Name</span>
       <h3 slot="heading">Change Your Name</h3>
       <form
-        action="?/update-username"
+        action="?/update-name"
         method="post"
         class="space-y-2"
-        use:enhance={submitUpdateUsername}
+        use:enhance={submitUpdate}
       >
         <Input
-          id="username"
-          label="Username"
-          value={data?.user?.username}
-          placeholder={data?.user?.username || "Enter Your Name"}
+          id="name"
+          label="name"
+          value={data?.user?.name}
+          placeholder={data?.user?.name || 'Enter Your Name'}
           disabled={loading}
+          errors={form?.errors?.name}
         />
         <button class="btn-primary btn w-full" disabled={loading} type="submit"
           >Change Name</button

@@ -1,19 +1,20 @@
 <script lang="ts">
-  import type { ActionData, PageData } from "./$types";
+  import { Input } from '$lib/components';
+  import type { ActionData } from './$types';
 
   export let form: ActionData;
 </script>
 
 <div class="flex h-full w-full flex-col items-center">
   <h2
-    class="text-base-content mt-2 text-center text-3xl font-bold tracking-tight"
+    class="mt-2 text-center text-3xl font-bold tracking-tight text-base-content"
   >
     Login Account
   </h2>
   <p class="mt-1 text-center">
     Or <a
       href="/register"
-      class="text-primary font-medium hover:cursor-pointer hover:underline"
+      class="font-medium text-primary hover:cursor-pointer hover:underline"
       >Register</a
     > If you don't have account.
   </p>
@@ -22,41 +23,34 @@
     method="post"
     class="flex w-full flex-col items-center space-y-2 pt-4"
   >
-    <div class="form-control w-full max-w-md">
-      <label for="email" class="label pb-1 font-medium">
-        <span class="label-text">Email</span>
-      </label>
-      <input
-        type="email"
-        name="email"
-        class="input-bordered input w-full max-w-md"
-      />
-    </div>
-    <div class="form-control w-full max-w-md">
-      <label for="password" class="label pb-1 font-medium">
-        <span class="label-text">Password</span>
-      </label>
-      <input
-        type="password"
-        name="password"
-        class="input-bordered input w-full max-w-md"
-      />
-    </div>
-    <div class="w-full max-w-md">
+    <Input
+      label="Email"
+      type="email"
+      id="email"
+      value={form?.data?.email ?? ''}
+      errors={form?.errors?.email}
+    />
+    <Input
+      type="password"
+      id="password"
+      label="Password"
+      errors={form?.errors?.password}
+    />
+    <div class="w-full max-w-lg">
       <a
         href="/reset-password"
-        class="text-primary font-medium hover:cursor-pointer hover:underline"
+        class="font-medium text-primary hover:cursor-pointer hover:underline"
       >
         Forgot password?
       </a>
     </div>
 
-    <div class="w-full max-w-md pt-2">
+    <div class="w-full max-w-lg pt-2">
       <button type="submit" class="btn-primary btn mb-6 w-full"> Login </button>
     </div>
 
     {#if form?.verified === false}
-      <div class="alert alert-error mt-3 w-full max-w-md shadow-lg">
+      <div class="alert alert-error mt-3 w-full max-w-lg shadow-lg">
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"

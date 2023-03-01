@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import type { ZodEffects, ZodError, ZodObject } from 'zod'
 
 export const serializeNonPOJOs = (obj: Object | null): any => {
   return structuredClone(obj);
@@ -16,3 +17,21 @@ export const getImageURL = (
 ) => {
   return `http://localhost:8090/api/files/${collectionId}/${recordId}/${fileName}?thumb=${size}`;
 };
+
+export const validataData = async (formData: FormData, schema: ZodEffects<ZodObject<any>> | ZodObject<any>) => {
+  const body = Object.fromEntries(formData);
+  try {
+    const data = schema.parse(body);
+    return {
+      formData: data,
+      errors: null
+    }
+  } catch (err: unknown) {
+    console.log(JSON.stringify(err, null, 4));
+    const errors = (<ZodError>err).formErrors;
+    return {
+      formData: body,
+      errors
+    }
+  }
+}  
